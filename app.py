@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 # Load the pre-trained model
-model = tf.keras.models.load_model("model.keras")
+model = tf.keras.models.load_model("your_model.keras")
 
 # Define emotion labels
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
