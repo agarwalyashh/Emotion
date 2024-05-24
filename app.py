@@ -1,5 +1,5 @@
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageOps
 import numpy as np
 import tensorflow as tf
 
@@ -11,34 +11,32 @@ emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutr
 
 
 # Function to classify emotion
-# Function to classify emotion
-from PIL import ImageOps
-
-
-# Function to classify emotion
 def classify_emotion(image):
-    # Convert image to grayscale
-    image = ImageOps.grayscale(image)
+    # Ensure the image has 3 color channels (RGB)
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+
     # Resize image to match model input size
-    image = image.resize((48, 48))
+    image = image.resize((224, 224))
+
     # Normalize pixel values
     image = np.array(image) / 255.0
+
     # Add batch dimension
     image = np.expand_dims(image, axis=0)
 
-    # Print the shape of the image
-    print("Image shape:", image.shape)
-
+    # Predict emotion
     result = model.predict(image)
     emotion_index = np.argmax(result)
+
     return emotion_labels[emotion_index]
 
 
 # Main function
 def main():
     st.title("Facial Expression Recognition")
-
     st.write("Upload an image to classify its emotion: Happy, Surprise, Fear, Angry, Neutral, Disgust or Sad")
+
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
